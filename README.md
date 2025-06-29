@@ -16,8 +16,6 @@
   <img src="upscaled-image (2).png" alt="Featured Photography 3" width="30%" style="margin: 10px;">
 </p>
 
-![Portfolio Preview](https://aatmaj28.github.io/PhotographyWebsite/) 
-
 ## 📷 About This Portfolio
 
 Welcome to my digital photography showcase! This website serves as a comprehensive gallery of my photographic work, capturing moments and creating art through my lens. As a 22-year-old photographer and student at Northeastern University, Boston, I've developed this portfolio to:
@@ -43,7 +41,7 @@ The website features a clean, modern design that puts the focus on the photograp
 
 ## 🚀 Live Demo
 
-Check out the live portfolio: [**View Portfolio**](https://aatmaj28.github.io/PhotographyWebsite/)
+🔗 Check out the live version of this portfolio: [**View Portfolio Website**](https://aatmaj28.github.io/PhotographyWebsite/)
 
 ## 🛠️ Technologies Used
 
