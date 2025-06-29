@@ -47,7 +47,6 @@ The website features a clean, modern design that puts the focus on the photograp
   </a>
 </p>
 
-
 ## 🛠️ Technologies Used
 
 - **HTML5** - Semantic markup
