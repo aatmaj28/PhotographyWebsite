@@ -16,7 +16,7 @@
   <img src="upscaled-image (2).png" alt="Featured Photography 3" width="30%" style="margin: 10px;">
 </p>
 
-![Portfolio Preview](https://aatmaj28.github.io/PhotographyWebsite/)
+![Portfolio Preview](https://aatmaj28.github.io/PhotographyWebsite/) 
 
 ## 📷 About This Portfolio
 
