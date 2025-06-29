@@ -8,6 +8,14 @@
 
 > A modern, responsive photography portfolio showcasing my visual storytelling journey through 50+ carefully curated images.
 
+## 🎨 Featured Work
+
+<p align="center">
+  <img src="upscaled-image.png" alt="Featured Photography 1" width="30%" style="margin: 10px;">
+  <img src="upscaled-image (1).png" alt="Featured Photography 2" width="30%" style="margin: 10px;">
+  <img src="upscaled-image (2).png" alt="Featured Photography 3" width="30%" style="margin: 10px;">
+</p>
+
 ![Portfolio Preview](https://via.placeholder.com/1200x600/1a1a1a/8338ec?text=Photography+Portfolio+Preview)
 
 ## 📷 About This Portfolio
