@@ -41,7 +41,12 @@ The website features a clean, modern design that puts the focus on the photograp
 
 ## 🚀 Live Demo
 
-🔗 Check out the live version of this portfolio: [**View Portfolio Website**](https://aatmaj28.github.io/PhotographyWebsite/)
+<p align="center">
+  <a href="https://aatmaj28.github.io/PhotographyWebsite/" target="_blank">
+    <img src="https://img.shields.io/badge/View%20Portfolio-Click%20Here-blue?style=for-the-badge" alt="View Portfolio">
+  </a>
+</p>
+
 
 ## 🛠️ Technologies Used
 
