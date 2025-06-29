@@ -16,7 +16,7 @@
   <img src="upscaled-image (2).png" alt="Featured Photography 3" width="30%" style="margin: 10px;">
 </p>
 
-![Portfolio Preview](https://aatmaj28.github.io/PhotographyWebsite/))
+![Portfolio Preview](https://aatmaj28.github.io/PhotographyWebsite/)
 
 ## 📷 About This Portfolio
 
@@ -43,7 +43,7 @@ The website features a clean, modern design that puts the focus on the photograp
 
 ## 🚀 Live Demo
 
-Check out the live portfolio: [**View Portfolio**](https://aatmaj28.github.io/PhotographyWebsite/))
+Check out the live portfolio: [**View Portfolio**](https://aatmaj28.github.io/PhotographyWebsite/)
 
 ## 🛠️ Technologies Used
 
