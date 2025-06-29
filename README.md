@@ -67,52 +67,6 @@ photography-portfolio/
 └── upscaled-image (50).png
 ```
 
-## 🎯 Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
-   ```
-
-2. **Add your images**
-   - Place your profile picture as `Snap pic.jpg`
-   - Add your gallery images following the naming convention:
-     - `upscaled-image.png` (featured)
-     - `upscaled-image (1).png` through `upscaled-image (50).png`
-
-3. **Deploy to GitHub Pages**
-   - Go to Settings → Pages
-   - Select Source: Deploy from a branch
-   - Select Branch: main (or master)
-   - Click Save
-
-4. **Access your portfolio**
-   - Your site will be available at: `https://your-username.github.io/your-repo-name/`
-
-## 🎨 Customization
-
-### Updating Personal Information
-Edit the following sections in `index.html`:
-
-- **Name**: Line with `<div class="logo">Aatmaj Amol Salunke</div>`
-- **About Section**: Update the bio text in the about section
-- **Contact Info**: Modify email and LinkedIn links in the footer
-
-### Styling Changes
-The CSS is embedded in the HTML file. Key color variables:
-- Primary gradient: `#ff006e, #8338ec, #3a86ff`
-- Background: `#0a0a0a`
-- Text: `#ffffff`
-
-## 📸 Image Guidelines
-
-For best results:
-- **Recommended dimensions**: 1920x1080 or higher
-- **File format**: PNG or JPG
-- **File size**: Optimize for web (under 500KB per image)
-- **Naming**: Follow the exact naming convention
-
 ## 🌟 Features in Detail
 
 ### Gallery Grid
@@ -136,20 +90,6 @@ For best results:
 - 📧 Email: [aatmajsalunke@yahoo.com](mailto:aatmajsalunke@yahoo.com)
 - 💼 LinkedIn: [Connect with me](https://www.linkedin.com/in/aatmaj-salunke-7106041b0/)
 - 🎓 Northeastern University, Boston
-
-## 🤝 Contributing
-
-While this is a personal portfolio, suggestions and feedback are always welcome! Feel free to:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/suggestion`)
-3. Commit your changes (`git commit -m 'Add suggestion'`)
-4. Push to the branch (`git push origin feature/suggestion`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
