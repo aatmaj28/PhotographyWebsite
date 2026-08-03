@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Photography Portfolio</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c9a36a' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23c9a36a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #0c0b09;
+    --bg-2: #14120f;
+    --surface: #1a1712;
+    --surface-2: #221e17;
+    --text: #e9e4da;
+    --muted: #9a938a;
+    --amber: #c9a36a;
+    --amber-bright: #e0b87d;
+    --red: #c96a6a;
+    --green: #8fb573;
+    --hairline: rgba(233, 228, 218, 0.1);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: var(--sans);
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.9rem;
+}
+h1 em { font-style: italic; color: var(--amber-bright); }
+.kicker {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--amber);
+}
+button {
+    font-family: var(--sans);
+    cursor: pointer;
+}
+.btn {
+    display: inline-block;
+    padding: 0.65rem 1.5rem;
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+.btn:hover { background: var(--amber-bright); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-ghost {
+    background: none;
+    border: 1px solid var(--hairline);
+    color: var(--muted);
+}
+.btn-ghost:hover { background: var(--surface); color: var(--text); }
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg-2);
+    border: 1px solid var(--hairline);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 300;
+}
+input:focus { outline: 1px solid var(--amber); }
+label {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 1.1rem 0 0.4rem;
+}
+
+/* ---------- Setup gate ---------- */
+#gate {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 5rem 1.6rem;
+}
+#gate .card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 2.4rem;
+    margin-top: 2rem;
+}
+#gate ol {
+    margin: 1rem 0 1.6rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+#gate ol li { margin-bottom: 0.5rem; }
+#gate ol a { color: var(--amber-bright); }
+#gate .error {
+    color: var(--red);
+    font-size: 0.82rem;
+    margin-top: 1rem;
+    display: none;
+}
+#gate .btn { margin-top: 1.6rem; width: 100%; }
+
+/* ---------- App ---------- */
+#app { display: none; max-width: 1150px; margin: 0 auto; padding: 2.2rem 1.6rem 9rem; }
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 1.8rem;
+}
+.topbar .actions { display: flex; gap: 0.7rem; }
+.topbar a.btn-ghost { text-decoration: none; padding: 0.65rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; }
+
+/* Upload zone */
+#dropzone {
+    border: 1px dashed rgba(201, 163, 106, 0.5);
+    background: var(--bg-2);
+    padding: 2.6rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    margin-bottom: 1.4rem;
+}
+#dropzone:hover, #dropzone.over {
+    background: var(--surface);
+    border-color: var(--amber);
+}
+#dropzone .big {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--amber-bright);
+}
+#dropzone .small { font-size: 0.76rem; color: var(--muted); margin-top: 0.3rem; }
+
+/* Status log */
+#status {
+    display: none;
+    background: var(--bg-2);
+    border: 1px solid var(--hairline);
+    border-left: 2px solid var(--amber);
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    white-space: pre-line;
+}
+#status.error { border-left-color: var(--red); color: var(--red); }
+#status.ok { border-left-color: var(--green); }
+
+/* Photo list */
+.list-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 2rem 0 1rem;
+}
+.list-head .count { font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+#photo-list { display: flex; flex-direction: column; gap: 10px; }
+.photo-row {
+    display: grid;
+    grid-template-columns: auto 96px 1fr auto;
+    gap: 1.1rem;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 0.8rem 1rem;
+}
+.photo-row.dragging { opacity: 0.35; }
+.drag-handle {
+    cursor: grab;
+    color: var(--muted);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    user-select: none;
+    padding: 0.4rem 0.2rem;
+}
+.photo-row .thumb {
+    width: 96px;
+    height: 72px;
+    object-fit: cover;
+    display: block;
+    background: var(--bg-2);
+    border: 1px solid var(--hairline);
+}
+.photo-fields { display: flex; flex-direction: column; gap: 0.45rem; min-width: 0; }
+.photo-fields .row1 { display: flex; align-items: center; gap: 0.8rem; }
+.photo-num {
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    color: var(--amber);
+    white-space: nowrap;
+}
+.photo-fields input { padding: 0.45rem 0.7rem; font-size: 0.84rem; }
+.photo-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.55rem;
+}
+.feat-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+}
+.feat-toggle input { accent-color: var(--amber); cursor: pointer; }
+.feat-toggle.on { color: var(--amber-bright); }
+.mini-actions { display: flex; gap: 0.35rem; }
+.mini-actions button {
+    background: none;
+    border: 1px solid var(--hairline);
+    color: var(--muted);
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+.mini-actions button:hover { color: var(--text); border-color: var(--muted); }
+.mini-actions button.del:hover { color: var(--red); border-color: var(--red); }
+
+/* Save bar */
+#savebar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: rgba(20, 18, 15, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--hairline);
+    padding: 1rem 1.6rem;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4rem;
+    z-index: 100;
+}
+#savebar.show { display: flex; }
+#savebar .msg { font-size: 0.8rem; color: var(--amber-bright); }
+
+@media (max-width: 700px) {
+    .photo-row { grid-template-columns: auto 64px 1fr; }
+    .photo-row .thumb { width: 64px; height: 48px; }
+    .photo-side { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP GATE ============ -->
+<main id="gate">
+    <p class="kicker">Admin Portal</p>
+    <h1>Darkroom <em>Keys</em></h1>
+    <div class="card">
+        <p style="font-size:0.88rem; color: var(--muted);">
+            This portal commits straight to your GitHub repo. It needs a
+            <strong style="color:var(--text)">fine-grained personal access token</strong> —
+            it will be stored only in this browser.
+        </p>
+        <ol>
+            <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Settings → Developer settings → Fine-grained tokens</a></li>
+            <li>Name it e.g. <em>photo-admin</em>, set a long expiration</li>
+            <li>Repository access → <strong>Only select repositories</strong> → pick this repo</li>
+            <li>Permissions → Repository permissions → <strong>Contents → Read and write</strong></li>
+            <li>Generate, copy, paste below</li>
+        </ol>
+        <label for="cfg-owner">GitHub owner</label>
+        <input type="text" id="cfg-owner" value="aatmaj28" autocomplete="off">
+        <label for="cfg-repo">Repository</label>
+        <input type="text" id="cfg-repo" value="PhotographyWebsite" autocomplete="off">
+        <label for="cfg-branch">Branch</label>
+        <input type="text" id="cfg-branch" value="main" autocomplete="off">
+        <label for="cfg-token">Personal access token</label>
+        <input type="password" id="cfg-token" placeholder="github_pat_…" autocomplete="off">
+        <p class="error" id="gate-error"></p>
+        <button class="btn" id="gate-save">Unlock the darkroom</button>
+    </div>
+</main>
+
+<!-- ============ APP ============ -->
+<main id="app">
+    <div class="topbar">
+        <div>
+            <p class="kicker">Admin Portal</p>
+            <h1>The <em>Darkroom</em></h1>
+        </div>
+        <div class="actions">
+            <a class="btn-ghost btn" href="../" target="_blank" rel="noopener">View site</a>
+            <button class="btn btn-ghost" id="signout">Forget token</button>
+        </div>
+    </div>
+
+    <div id="dropzone">
+        <p class="big">Drop photographs here</p>
+        <p class="small">or click to choose — they'll be compressed in your browser and published in one commit</p>
+        <input type="file" id="file-input" accept="image/*" multiple hidden>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="list-head">
+        <p class="kicker">The Collection</p>
+        <p class="count" id="count"></p>
+    </div>
+    <div id="photo-list"></div>
+</main>
+
+<div id="savebar">
+    <span class="msg">Unsaved changes to titles / order / featured</span>
+    <button class="btn" id="save-btn">Save &amp; publish</button>
+    <button class="btn btn-ghost" id="discard-btn">Discard</button>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+const LS_KEY = 'pw_admin_cfg';
+const FULL_MAX = 2000, THUMB_MAX = 800, JPEG_Q = 0.82;
+
+let cfg = null;          // { owner, repo, branch, token }
+let photos = [];         // gallery.json manifest, in-memory
+let dirty = false;
+let busy = false;
+const localPreviews = {}; // id -> objectURL for photos uploaded this session
+
+const $ = (s) => document.querySelector(s);
+const pad = (n) => String(n).padStart(2, '0');
+
+/* ================= GitHub API ================= */
+
+const api = (path, opts = {}) =>
+    fetch(`https://api.github.com${path}`, {
+        ...opts,
+        headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            ...(opts.headers || {}),
+        },
+    }).then(async (r) => {
+        if (!r.ok) {
+            const body = await r.text().catch(() => '');
+            throw new Error(`GitHub ${r.status} on ${path}: ${body.slice(0, 200)}`);
+        }
+        return r.status === 204 ? null : r.json();
+    });
+
+const repoBase = () => `/repos/${cfg.owner}/${cfg.repo}`;
+
+async function fetchManifest() {
+    const r = await fetch(
+        `https://api.github.com${repoBase()}/contents/gallery.json?ref=${cfg.branch}&t=${Date.now()}`,
+        { headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github.raw+json' } }
+    );
+    if (!r.ok) throw new Error(`Could not read gallery.json (HTTP ${r.status})`);
+    const manifest = await r.json();
+    return manifest.photos || [];
+}
+
+/*
+ * One atomic commit for any set of changes.
+ * changes: [{ path, base64 }]  — base64: null deletes the file
+ */
+async function commit(changes, message) {
+    const ref = await api(`${repoBase()}/git/ref/heads/${cfg.branch}`);
+    const headSha = ref.object.sha;
+    const headCommit = await api(`${repoBase()}/git/commits/${headSha}`);
+
+    const tree = [];
+    for (const ch of changes) {
+        if (ch.base64 === null) {
+            tree.push({ path: ch.path, mode: '100644', type: 'blob', sha: null });
+        } else {
+            const blob = await api(`${repoBase()}/git/blobs`, {
+                method: 'POST',
+                body: JSON.stringify({ content: ch.base64, encoding: 'base64' }),
+            });
+            tree.push({ path: ch.path, mode: '100644', type: 'blob', sha: blob.sha });
+        }
+    }
+
+    const newTree = await api(`${repoBase()}/git/trees`, {
+        method: 'POST',
+        body: JSON.stringify({ base_tree: headCommit.tree.sha, tree }),
+    });
+    const newCommit = await api(`${repoBase()}/git/commits`, {
+        method: 'POST',
+        body: JSON.stringify({ message, tree: newTree.sha, parents: [headSha] }),
+    });
+    await api(`${repoBase()}/git/refs/heads/${cfg.branch}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ sha: newCommit.sha }),
+    });
+    return newCommit.sha;
+}
+
+const manifestB64 = () => {
+    const json = JSON.stringify({ photos }, null, 2) + '\n';
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    bytes.forEach((b) => { bin += String.fromCharCode(b); });
+    return btoa(bin);
+};
+
+/* ================= Image processing ================= */
+
+async function decodeImage(file) {
+    if (window.createImageBitmap) {
+        try {
+            return await createImageBitmap(file, { imageOrientation: 'from-image' });
+        } catch (e) { /* fall through */ }
+    }
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('unsupported image format'));
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+function resizeToJpeg(source, maxEdge) {
+    const sw = source.width, sh = source.height;
+    const scale = Math.min(1, maxEdge / Math.max(sw, sh));
+    const w = Math.round(sw * scale), h = Math.round(sh * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(source, 0, 0, w, h);
+    return new Promise((resolve) =>
+        canvas.toBlob((blob) => resolve({ blob, width: w, height: h }), 'image/jpeg', JPEG_Q));
+}
+
+const blobToB64 = (blob) => new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result.split(',')[1]);
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+});
+
+/* ================= UI helpers ================= */
+
+const statusBox = $('#status');
+function setStatus(msg, kind = '') {
+    statusBox.style.display = msg ? 'block' : 'none';
+    statusBox.textContent = msg;
+    statusBox.className = kind;
+}
+
+function setDirty(d) {
+    dirty = d;
+    $('#savebar').classList.toggle('show', d);
+}
+
+function setBusy(b) {
+    busy = b;
+    $('#save-btn').disabled = b;
+    document.body.style.cursor = b ? 'progress' : '';
+}
+
+const thumbUrl = (p) =>
+    localPreviews[p.id] ||
+    `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.branch}/images/thumbs/${p.id}.jpg`;
+
+/* ================= Photo list ================= */
+
+function render() {
+    const list = $('#photo-list');
+    list.innerHTML = '';
+    $('#count').textContent = `${photos.length} photographs · ${photos.filter((p) => p.featured).length} featured in hero`;
+
+    photos.forEach((p, i) => {
+        const row = document.createElement('div');
+        row.className = 'photo-row';
+        row.draggable = true;
+        row.dataset.index = i;
+
+        const handle = document.createElement('span');
+        handle.className = 'drag-handle';
+        handle.textContent = '⠿';
+        handle.title = 'Drag to reorder';
+
+        const img = document.createElement('img');
+        img.className = 'thumb';
+        img.src = thumbUrl(p);
+        img.alt = '';
+        img.loading = 'lazy';
+
+        const fields = document.createElement('div');
+        fields.className = 'photo-fields';
+
+        const row1 = document.createElement('div');
+        row1.className = 'row1';
+        const num = document.createElement('span');
+        num.className = 'photo-num';
+        num.textContent = `№ ${pad(i + 1)}`;
+        const title = document.createElement('input');
+        title.type = 'text';
+        title.placeholder = 'Title (shown on hover & in viewer)';
+        title.value = p.title || '';
+        title.addEventListener('input', () => { p.title = title.value; setDirty(true); });
+        row1.appendChild(num);
+        row1.appendChild(title);
+
+        const caption = document.createElement('input');
+        caption.type = 'text';
+        caption.placeholder = 'Caption (shown in full-screen viewer)';
+        caption.value = p.caption || '';
+        caption.addEventListener('input', () => { p.caption = caption.value; setDirty(true); });
+
+        fields.appendChild(row1);
+        fields.appendChild(caption);
+
+        const side = document.createElement('div');
+        side.className = 'photo-side';
+
+        const feat = document.createElement('label');
+        feat.className = 'feat-toggle' + (p.featured ? ' on' : '');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!p.featured;
+        cb.addEventListener('change', () => {
+            p.featured = cb.checked;
+            feat.classList.toggle('on', cb.checked);
+            setDirty(true);
+        });
+        feat.appendChild(cb);
+        feat.appendChild(document.createTextNode('Hero'));
+
+        const mini = document.createElement('div');
+        mini.className = 'mini-actions';
+        const up = document.createElement('button');
+        up.textContent = '↑'; up.title = 'Move up';
+        up.addEventListener('click', () => move(i, i - 1));
+        const down = document.createElement('button');
+        down.textContent = '↓'; down.title = 'Move down';
+        down.addEventListener('click', () => move(i, i + 1));
+        const del = document.createElement('button');
+        del.className = 'del';
+        del.textContent = '✕'; del.title = 'Delete photo';
+        del.addEventListener('click', () => deletePhoto(i));
+        mini.appendChild(up); mini.appendChild(down); mini.appendChild(del);
+
+        side.appendChild(feat);
+        side.appendChild(mini);
+
+        row.appendChild(handle);
+        row.appendChild(img);
+        row.appendChild(fields);
+        row.appendChild(side);
+
+        // Drag & drop reorder
+        row.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', String(i));
+            e.dataTransfer.effectAllowed = 'move';
+            row.classList.add('dragging');
+        });
+        row.addEventListener('dragend', () => row.classList.remove('dragging'));
+        row.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+        row.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const from = parseInt(e.dataTransfer.getData('text/plain'), 10);
+            if (!Number.isNaN(from) && from !== i) move(from, i);
+        });
+
+        list.appendChild(row);
+    });
+}
+
+function move(from, to) {
+    if (to < 0 || to >= photos.length) return;
+    const [p] = photos.splice(from, 1);
+    photos.splice(to, 0, p);
+    setDirty(true);
+    render();
+}
+
+/* ================= Actions ================= */
+
+async function uploadFiles(files) {
+    const images = [...files].filter((f) => f.type.startsWith('image/'));
+    if (!images.length || busy) return;
+    setBusy(true);
+
+    const changes = [];
+    const added = [];
+    let done = 0;
+
+    try {
+        for (const file of images) {
+            setStatus(`Processing ${file.name} (${++done}/${images.length})…`);
+            let bitmap;
+            try {
+                bitmap = await decodeImage(file);
+            } catch (e) {
+                setStatus(`Skipped ${file.name}: could not decode (try JPEG/PNG).`, 'error');
+                continue;
+            }
+            const full = await resizeToJpeg(bitmap, FULL_MAX);
+            const thumb = await resizeToJpeg(bitmap, THUMB_MAX);
+            const id = `photo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+
+            changes.push({ path: `images/full/${id}.jpg`, base64: await blobToB64(full.blob) });
+            changes.push({ path: `images/thumbs/${id}.jpg`, base64: await blobToB64(thumb.blob) });
+
+            const entry = { id, title: '', caption: '', featured: false, width: full.width, height: full.height };
+            photos.push(entry);
+            added.push(entry);
+            localPreviews[id] = URL.createObjectURL(thumb.blob);
+        }
+
+        if (!added.length) { setBusy(false); return; }
+
+        changes.push({ path: 'gallery.json', base64: manifestB64() });
+        setStatus(`Publishing ${added.length} photo${added.length > 1 ? 's' : ''} to GitHub…`);
+        await commit(changes, `Add ${added.length} photo${added.length > 1 ? 's' : ''} via admin portal`);
+
+        setDirty(false); // manifest just published includes any pending edits
+        render();
+        setStatus(`✓ Published ${added.length} photo${added.length > 1 ? 's' : ''} — live in ~1–2 min once GitHub Pages rebuilds.`, 'ok');
+    } catch (err) {
+        setStatus(`Upload failed: ${err.message}`, 'error');
+    } finally {
+        setBusy(false);
+    }
+}
+
+async function deletePhoto(i) {
+    const p = photos[i];
+    const label = p.title ? `“${p.title}”` : `№ ${pad(i + 1)}`;
+    if (busy || !confirm(`Delete ${label} forever? This removes it from the site and the repo.`)) return;
+    setBusy(true);
+    setStatus(`Deleting ${label}…`);
+    try {
+        photos.splice(i, 1);
+        await commit([
+            { path: `images/full/${p.id}.jpg`, base64: null },
+            { path: `images/thumbs/${p.id}.jpg`, base64: null },
+            { path: 'gallery.json', base64: manifestB64() },
+        ], `Delete photo ${p.id} via admin portal`);
+        setDirty(false);
+        render();
+        setStatus(`✓ Deleted — live in ~1–2 min once GitHub Pages rebuilds.`, 'ok');
+    } catch (err) {
+        setStatus(`Delete failed: ${err.message} — reloading manifest.`, 'error');
+        photos = await fetchManifest().catch(() => photos);
+        render();
+    } finally {
+        setBusy(false);
+    }
+}
+
+async function saveManifest() {
+    if (busy) return;
+    setBusy(true);
+    setStatus('Publishing changes…');
+    try {
+        await commit(
+            [{ path: 'gallery.json', base64: manifestB64() }],
+            'Update titles/order/featured via admin portal'
+        );
+        setDirty(false);
+        setStatus('✓ Saved — live in ~1–2 min once GitHub Pages rebuilds.', 'ok');
+    } catch (err) {
+        setStatus(`Save failed: ${err.message}`, 'error');
+    } finally {
+        setBusy(false);
+    }
+}
+
+/* ================= Setup gate ================= */
+
+async function unlock() {
+    const owner = $('#cfg-owner').value.trim();
+    const repo = $('#cfg-repo').value.trim();
+    const branch = $('#cfg-branch').value.trim() || 'main';
+    const token = $('#cfg-token').value.trim();
+    const errBox = $('#gate-error');
+    errBox.style.display = 'none';
+
+    if (!owner || !repo || !token) {
+        errBox.textContent = 'Owner, repository and token are all required.';
+        errBox.style.display = 'block';
+        return;
+    }
+    cfg = { owner, repo, branch, token };
+    try {
+        await api(repoBase()); // validates token + repo access
+        localStorage.setItem(LS_KEY, JSON.stringify(cfg));
+        enterApp();
+    } catch (err) {
+        cfg = null;
+        errBox.textContent = `Could not access the repo: ${err.message}`;
+        errBox.style.display = 'block';
+    }
+}
+
+async function enterApp() {
+    $('#gate').style.display = 'none';
+    $('#app').style.display = 'block';
+    setStatus('Loading collection…');
+    try {
+        photos = await fetchManifest();
+        render();
+        setStatus('');
+    } catch (err) {
+        setStatus(`Could not load gallery.json: ${err.message}`, 'error');
+    }
+}
+
+/* ================= Wiring ================= */
+
+$('#gate-save').addEventListener('click', unlock);
+$('#cfg-token').addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+$('#signout').addEventListener('click', () => {
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+});
+
+$('#save-btn').addEventListener('click', saveManifest);
+$('#discard-btn').addEventListener('click', async () => {
+    if (busy) return;
+    setBusy(true);
+    photos = await fetchManifest().catch(() => photos);
+    setDirty(false);
+    render();
+    setBusy(false);
+});
+
+const dz = $('#dropzone');
+const fileInput = $('#file-input');
+dz.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => { uploadFiles(fileInput.files); fileInput.value = ''; });
+dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+dz.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dz.classList.remove('over');
+    uploadFiles(e.dataTransfer.files);
+});
+
+window.addEventListener('beforeunload', (e) => {
+    if (dirty || busy) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// Boot
+const saved = localStorage.getItem(LS_KEY);
+if (saved) {
+    try {
+        cfg = JSON.parse(saved);
+        enterApp();
+    } catch (e) {
+        localStorage.removeItem(LS_KEY);
+    }
+}
+})();
+</script>
+</body>
+</html>
