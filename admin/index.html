@@ -358,6 +358,7 @@ const pad = (n) => String(n).padStart(2, '0');
 
 const api = (path, opts = {}) =>
     fetch(`https://api.github.com${path}`, {
+        cache: 'no-store',
         ...opts,
         headers: {
             'Authorization': `Bearer ${cfg.token}`,
@@ -390,10 +391,7 @@ async function fetchManifest() {
  * changes: [{ path, base64 }]  — base64: null deletes the file
  */
 async function commit(changes, message) {
-    const ref = await api(`${repoBase()}/git/ref/heads/${cfg.branch}`);
-    const headSha = ref.object.sha;
-    const headCommit = await api(`${repoBase()}/git/commits/${headSha}`);
-
+    // Blobs don't depend on the parent commit — create them once up front
     const tree = [];
     for (const ch of changes) {
         if (ch.base64 === null) {
@@ -407,19 +405,32 @@ async function commit(changes, message) {
         }
     }
 
-    const newTree = await api(`${repoBase()}/git/trees`, {
-        method: 'POST',
-        body: JSON.stringify({ base_tree: headCommit.tree.sha, tree }),
-    });
-    const newCommit = await api(`${repoBase()}/git/commits`, {
-        method: 'POST',
-        body: JSON.stringify({ message, tree: newTree.sha, parents: [headSha] }),
-    });
-    await api(`${repoBase()}/git/refs/heads/${cfg.branch}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ sha: newCommit.sha }),
-    });
-    return newCommit.sha;
+    // The branch tip can move under us (or arrive stale from a cache);
+    // rebuild the tree/commit on the fresh tip and retry on fast-forward errors
+    for (let attempt = 1; ; attempt++) {
+        const ref = await api(`${repoBase()}/git/ref/heads/${cfg.branch}`);
+        const headSha = ref.object.sha;
+        const headCommit = await api(`${repoBase()}/git/commits/${headSha}`);
+
+        const newTree = await api(`${repoBase()}/git/trees`, {
+            method: 'POST',
+            body: JSON.stringify({ base_tree: headCommit.tree.sha, tree }),
+        });
+        const newCommit = await api(`${repoBase()}/git/commits`, {
+            method: 'POST',
+            body: JSON.stringify({ message, tree: newTree.sha, parents: [headSha] }),
+        });
+        try {
+            await api(`${repoBase()}/git/refs/heads/${cfg.branch}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ sha: newCommit.sha }),
+            });
+            return newCommit.sha;
+        } catch (err) {
+            if (attempt < 3 && /fast forward/i.test(err.message)) continue;
+            throw err;
+        }
+    }
 }
 
 const manifestB64 = () => {
@@ -661,7 +672,13 @@ async function deletePhoto(i) {
     setBusy(true);
     setStatus(`Deleting ${label}…`);
     try {
-        photos.splice(i, 1);
+        if (!dirty) {
+            // No unsaved edits in this tab — delete against the freshest
+            // manifest so a stale tab can never clobber newer changes
+            photos = await fetchManifest();
+        }
+        const idx = photos.findIndex((x) => x.id === p.id);
+        if (idx !== -1) photos.splice(idx, 1);
         await commit([
             { path: `images/full/${p.id}.jpg`, base64: null },
             { path: `images/thumbs/${p.id}.jpg`, base64: null },
