@@ -1,14 +1,6 @@
 {
   "photos": [
     {
-      "id": "photo-01",
-      "title": "",
-      "caption": "",
-      "featured": false,
-      "width": 1519,
-      "height": 2000
-    },
-    {
       "id": "photo-02",
       "title": "",
       "caption": "",
