@@ -194,13 +194,33 @@
     const lbCaption = $('.lb-caption');
     const lbCounter = $('.lb-counter');
 
+    let lbToken = 0;
+
     function renderLightbox() {
         const photo = state.photos[state.lightboxIndex];
-        lbImg.src = fullSrc(photo);
+        const token = ++lbToken;
+        const full = fullSrc(photo);
+
         lbImg.alt = photo.title || `Photograph ${state.lightboxIndex + 1}`;
         lbTitle.textContent = photo.title || '';
         lbCaption.textContent = photo.caption || '';
         lbCounter.textContent = `${pad(state.lightboxIndex + 1)} / ${pad(state.photos.length)}`;
+
+        // Show the already-cached grid thumbnail instantly, then swap in the
+        // full-resolution file once it has actually downloaded
+        lbImg.src = thumbSrc(photo);
+        lightbox.classList.add('loading');
+
+        const loader = new Image();
+        loader.onload = () => {
+            if (token !== lbToken) return; // superseded by faster navigation
+            lbImg.src = full;
+            lightbox.classList.remove('loading');
+        };
+        loader.onerror = () => {
+            if (token === lbToken) lightbox.classList.remove('loading');
+        };
+        loader.src = full;
 
         // Preload neighbours for instant paging
         [-1, 1].forEach((d) => {
