@@ -609,6 +609,14 @@
       "height": 2000
     },
     {
+      "id": "photo-199",
+      "title": "",
+      "caption": "",
+      "featured": false,
+      "width": 1515,
+      "height": 2000
+    },
+    {
       "id": "photo-77",
       "title": "",
       "caption": "",
@@ -1542,14 +1550,6 @@
       "caption": "",
       "featured": false,
       "width": 1500,
-      "height": 2000
-    },
-    {
-      "id": "photo-199",
-      "title": "",
-      "caption": "",
-      "featured": false,
-      "width": 1515,
       "height": 2000
     }
   ]
