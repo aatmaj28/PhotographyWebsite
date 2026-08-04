@@ -4,7 +4,7 @@
       "id": "photo-01",
       "title": "",
       "caption": "",
-      "featured": true,
+      "featured": false,
       "width": 1519,
       "height": 2000
     },
@@ -28,7 +28,7 @@
       "id": "photo-04",
       "title": "",
       "caption": "",
-      "featured": true,
+      "featured": false,
       "width": 1517,
       "height": 2000
     },
@@ -252,7 +252,7 @@
       "id": "photo-32",
       "title": "",
       "caption": "",
-      "featured": false,
+      "featured": true,
       "width": 1513,
       "height": 2000
     },
@@ -420,7 +420,7 @@
       "id": "photo-1785856406263-7awo",
       "title": "",
       "caption": "",
-      "featured": false,
+      "featured": true,
       "width": 1086,
       "height": 1448
     },
@@ -508,7 +508,7 @@
       "id": "photo-61",
       "title": "",
       "caption": "",
-      "featured": false,
+      "featured": true,
       "width": 1500,
       "height": 2000
     },
