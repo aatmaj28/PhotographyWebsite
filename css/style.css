@@ -157,7 +157,8 @@ nav {
 .mobile-menu {
     position: fixed;
     inset: 0;
-    z-index: 1100;
+    /* Below the header (1000) so the logo and ✕ toggle stay usable on top */
+    z-index: 999;
     background: rgba(12, 11, 9, 0.96);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
@@ -791,7 +792,27 @@ footer .section-kicker { margin-bottom: 1.2rem; }
 
     .social-links { gap: 2rem; }
 
-    .lightbox-nav { font-size: 3rem; padding: 0.8rem; }
+    .hero-kicker {
+        font-size: 0.62rem;
+        letter-spacing: 0.3em;
+    }
+
+    .lightbox-nav {
+        width: 44px;
+        height: 44px;
+        padding: 0 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--text);
+        background: rgba(12, 11, 9, 0.55);
+        border: 1px solid var(--hairline);
+        border-radius: 50%;
+    }
+
+    .lightbox-prev { left: 0.7rem; }
+    .lightbox-next { right: 0.7rem; }
 
     .lightbox-close { right: 1rem; }
 }
