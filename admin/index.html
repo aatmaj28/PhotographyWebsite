@@ -457,9 +457,11 @@ async function decodeImage(file) {
     });
 }
 
-function resizeToJpeg(source, maxEdge) {
+function resizeToJpeg(source, maxEdge, byWidth = false) {
     const sw = source.width, sh = source.height;
-    const scale = Math.min(1, maxEdge / Math.max(sw, sh));
+    // Thumbs scale by width — the grid constrains width, so portrait
+    // photos need full width resolution to stay sharp on retina screens
+    const scale = Math.min(1, maxEdge / (byWidth ? sw : Math.max(sw, sh)));
     const w = Math.round(sw * scale), h = Math.round(sh * scale);
     const canvas = document.createElement('canvas');
     canvas.width = w; canvas.height = h;
@@ -637,7 +639,7 @@ async function uploadFiles(files) {
                 continue;
             }
             const full = await resizeToJpeg(bitmap, FULL_MAX);
-            const thumb = await resizeToJpeg(bitmap, THUMB_MAX);
+            const thumb = await resizeToJpeg(bitmap, THUMB_MAX, true);
             const id = `photo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
             changes.push({ path: `images/full/${id}.jpg`, base64: await blobToB64(full.blob) });
